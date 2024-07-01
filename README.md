@@ -34,7 +34,7 @@ Ensure the following environment variables are set before running the script: (R
 ## Usage
 1. Clone the repository:
 ```sh
-git clone https://github.com/your_username/ibm-cloudpak-automation.git
+git clone https://github.com/ngpinjie/ibm-cloudpak-automation.git
 cd ibm-cloudpak-automation
 ```
    
