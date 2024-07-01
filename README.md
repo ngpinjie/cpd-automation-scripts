@@ -11,6 +11,9 @@ This repository contains shell scripts to automate the installation of various I
 - Watson Studio
 - DataStage
 - Watson Pipelines
+- Watson Machine Learning
+- Db2 Warehouse
+- Db2 Data Management Console
 
 ## Prerequisites
 - Red Hat OpenShift Container Platform cluster
