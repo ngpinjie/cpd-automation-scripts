@@ -40,12 +40,12 @@ cd cpd-automation-scripts
    
 2. Make the script executable:
 ```
-chmod +x install_cpd_components.sh
+chmod +x cpd-automation-scripts.sh
 ```
 
 3. Run the script:
 ```
-./install_cpd_components.sh
+./cpd-automation-scripts.sh
 ```
 
 ## Contributing
