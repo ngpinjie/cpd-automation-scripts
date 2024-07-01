@@ -40,12 +40,12 @@ cd cpd-automation-scripts
    
 2. Make the script executable:
 ```
-chmod +x install_services.sh.sh
+chmod +x install_services.sh
 ```
 
 3. Run the script:
 ```
-./install_services.sh.sh
+./install_services.sh
 ```
 
 ## Contributing
