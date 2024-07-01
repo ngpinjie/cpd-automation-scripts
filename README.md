@@ -35,7 +35,7 @@ Ensure the following environment variables are set before running the script: (R
 1. Clone the repository:
 ```sh
 git clone https://github.com/ngpinjie/cpd-automation-scripts.git
-cd ibm-cloudpak-automation
+cd cpd-automation-scripts
 ```
    
 2. Make the script executable:
