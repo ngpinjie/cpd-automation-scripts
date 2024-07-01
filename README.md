@@ -32,6 +32,12 @@ Ensure the following environment variables are set before running the script: (R
 - `DATASTAGE_TYPE`
 
 ## Usage
+A. Important:
+```
+Ensure you have environment variables setup properly.
+source ./cpd_vars.sh
+```
+
 1. Clone the repository:
 ```sh
 git clone https://github.com/ngpinjie/cpd-automation-scripts.git
