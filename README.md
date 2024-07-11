@@ -67,12 +67,18 @@ export STG_CLASS_FILE=<file_storage_class>
 export DATASTAGE_TYPE=<datastage_type>
 ```
 
-4. Run the Installation Script
+4. Modify resources.txt
+```
+Edit the resources.txt file to include the components you want to install.
+Each component should be on a new line.
+```
+
+5. Run the Installation Script
 ```
 ./install_services.sh
 ```
 
-5. Verify the Installations
+6. Verify the Installations
 ```
 ./verify_installations.sh
 ```
