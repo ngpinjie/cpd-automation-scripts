@@ -29,72 +29,42 @@ apply_cr() {
     --license_acceptance=true
 }
 
-# Function to get CR status
-get_cr_status() {
-  local component=$1
-  cpd-cli manage get-cr-status \
-    --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-    --components=${component}
-}
-
 # Installing Analytics Engine powered by Apache Spark
 login_ocp
 apply_olm "analyticsengine"
 apply_cr "analyticsengine"
-get_cr_status "analyticsengine"
 
 # Installing watsonx.data
 login_ocp
 apply_olm "watsonx_data"
 apply_cr "watsonx_data"
-get_cr_status "watsonx_data"
 
 # Installing Watson Studio
 login_ocp
 apply_olm "ws"
 apply_cr "ws"
-get_cr_status "ws"
 
 # Installing DataStage
 login_ocp
 apply_olm "datastage_ent"
 apply_cr "${DATASTAGE_TYPE}"
-get_cr_status "${DATASTAGE_TYPE}"
 
 # Installing WatsonPipeline
 login_ocp
 apply_olm "ws_pipelines"
 apply_cr "ws_pipelines"
-get_cr_status "ws_pipelines"
 
 # Installing Watson Machine Learning
 login_ocp
 apply_olm "wml"
-cpd-cli manage apply-cr \
-  --components=wml \
-  --release=${VERSION} \
-  --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-  --block_storage_class=${STG_CLASS_BLOCK} \
-  --file_storage_class=${STG_CLASS_FILE} \
-  --license_acceptance=true
-get_cr_status "wml"
+apply_cr "wml"
 
 # Installing Db2 Data Management Console
 login_ocp
 apply_olm "dmc"
-cpd-cli manage apply-cr \
-  --components=dmc \
-  --release=${VERSION} \
-  --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-  --license_acceptance=true
-get_cr_status "dmc"
+apply_cr "dmc"
 
 # Installing Db2 Warehouse
 login_ocp
 apply_olm "db2wh"
-cpd-cli manage apply-cr \
-  --components=db2wh \
-  --release=${VERSION} \
-  --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-  --license_acceptance=true
-get_cr_status "db2wh"
+apply_cr "db2wh"
