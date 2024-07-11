@@ -29,42 +29,9 @@ apply_cr() {
     --license_acceptance=true
 }
 
-# Installing Analytics Engine powered by Apache Spark
+# Read components from resources.txt and install each one
 login_ocp
-apply_olm "analyticsengine"
-apply_cr "analyticsengine"
-
-# Installing watsonx.data
-login_ocp
-apply_olm "watsonx_data"
-apply_cr "watsonx_data"
-
-# Installing Watson Studio
-login_ocp
-apply_olm "ws"
-apply_cr "ws"
-
-# Installing DataStage
-login_ocp
-apply_olm "datastage_ent"
-apply_cr "${DATASTAGE_TYPE}"
-
-# Installing WatsonPipeline
-login_ocp
-apply_olm "ws_pipelines"
-apply_cr "ws_pipelines"
-
-# Installing Watson Machine Learning
-login_ocp
-apply_olm "wml"
-apply_cr "wml"
-
-# Installing Db2 Data Management Console
-login_ocp
-apply_olm "dmc"
-apply_cr "dmc"
-
-# Installing Db2 Warehouse
-login_ocp
-apply_olm "db2wh"
-apply_cr "db2wh"
+while IFS= read -r component; do
+  apply_olm "${component}"
+  apply_cr "${component}"
+done < resources.txt
