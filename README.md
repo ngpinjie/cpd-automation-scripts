@@ -65,6 +65,10 @@ Each component should be on a new line.
 ```
 ./install_services.sh
 ```
+5.1. Alternatively, you can run the installations on the background
+```
+nohup ./install_services.sh > ./logs/install_services.log 2>&1 &
+```
 
 6. Verify the Installations
 ```
