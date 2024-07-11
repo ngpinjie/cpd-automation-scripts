@@ -1,4 +1,4 @@
-# IBM Cloud Pak for Data Automation Scripts
+# IBM Cloud Pak for Data's Resources Installation Automation Scripts
 This repository contains scripts for the automated installation and verification of IBM Cloud Pak for Data (CP4D) services on the OpenShift Container Platform (OCP). The scripts streamline the deployment process for various CP4D components and ensure their proper installation by checking their status. The repository is modularized to allow easy addition or removal of components to be installed or verified.
 
 ## Prerequisites
