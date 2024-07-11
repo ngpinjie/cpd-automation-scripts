@@ -1,9 +1,17 @@
-# cpd-automation-scripts
-Shell scripts for automating the installation of IBM Cloud Pak for Data components on OpenShift
-
 # IBM Cloud Pak for Data Automation Scripts
+This repository contains two scripts for installing and verifying IBM Cloud Pak for Data (CP4D) services on OpenShift Container Platform (OCP). These scripts automate the installation of various CP4D components and verify their installation status.
 
-This repository contains shell scripts to automate the installation of various IBM Cloud Pak for Data components on a Red Hat OpenShift cluster.
+# Environment Variables
+Ensure the following environment variables are set before running the scripts:
+- OCP_USERNAME: Username for OCP login
+- OCP_PASSWORD: Password for OCP login
+- OCP_URL: OCP server URL
+- VERSION: CP4D version to install
+- PROJECT_CPD_INST_OPERATORS: Namespace for CP4D operators
+- PROJECT_CPD_INST_OPERANDS: Namespace for CP4D operands
+- STG_CLASS_BLOCK: Storage class for block storage
+- STG_CLASS_FILE: Storage class for file storage
+- DATASTAGE_TYPE: Type of DataStage to install (e.g., datastage_ent)
 
 ## Components Installed
 - Analytics Engine powered by Apache Spark
