@@ -19,7 +19,7 @@ Ensure the following environment variables are set before running the scripts:
 - `STG_CLASS_FILE`: Storage class for file storage
 - `DATASTAGE_TYPE`: Type of DataStage to install (e.g., datastage_ent)
 
-## Components Installed
+## Components Installed (resources.txt)
 - Analytics Engine powered by Apache Spark
 - watsonx.data
 - Watson Studio
