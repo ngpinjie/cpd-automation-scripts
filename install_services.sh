@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Create logs directory if it doesn't exist
-mkdir -p ./logs
-
 # Function to login to OCP
 login_ocp() {
   cpd-cli manage login-to-ocp \
@@ -14,22 +11,22 @@ login_ocp() {
 # Function to apply OLM
 apply_olm() {
   local component=$1
-  nohup cpd-cli manage apply-olm \
+  cpd-cli manage apply-olm \
     --release=${VERSION} \
     --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} \
-    --components=${component} > "./logs/${component}_olm.log" 2>&1 &
+    --components=${component}
 }
 
 # Function to apply CR
 apply_cr() {
   local component=$1
-  nohup cpd-cli manage apply-cr \
+  cpd-cli manage apply-cr \
     --components=${component} \
     --release=${VERSION} \
     --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
     --block_storage_class=${STG_CLASS_BLOCK} \
     --file_storage_class=${STG_CLASS_FILE} \
-    --license_acceptance=true > "./logs/${component}_cr.log" 2>&1 &
+    --license_acceptance=true
 }
 
 # Read components from resources.txt and install each one
