@@ -1,7 +1,13 @@
 # IBM Cloud Pak for Data Automation Scripts
 This repository contains two scripts for installing and verifying IBM Cloud Pak for Data (CP4D) services on OpenShift Container Platform (OCP). These scripts automate the installation of various CP4D components and verify their installation status.
 
-# Environment Variables
+## Prerequisites
+- OpenShift Container Platform (OCP) cluster
+- cpd-cli installed and configured
+- Valid credentials and access to the OCP cluster
+- Required environment variables set up
+
+## Environment Variables
 Ensure the following environment variables are set before running the scripts:
 - `OCP_USERNAME`: Username for OCP login
 - `OCP_PASSWORD`: Password for OCP login
@@ -22,10 +28,6 @@ Ensure the following environment variables are set before running the scripts:
 - Watson Machine Learning
 - Db2 Warehouse
 - Db2 Data Management Console
-
-## Prerequisites
-- Red Hat OpenShift Container Platform cluster
-- IBM Cloud Pak for Data CLI (`cpd-cli`) installed
 
 ## Environment Variables
 Ensure the following environment variables are set before running the script: (Refer to Line 32 to 67 of https://github.com/ngpinjie/cpd-installation-scripts)
