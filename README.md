@@ -7,7 +7,7 @@ This repository contains scripts for the automated installation and verification
 - Valid credentials and access to the OCP cluster
 - Required environment variables set up
 
-## Environment Variables
+## Environment Variables **(You may refer to Line 32 to 67 of https://github.com/ngpinjie/cpd-installation-scripts)**
 Ensure the following environment variables are set before running the scripts:
 - `OCP_USERNAME`: Username for OCP login
 - `OCP_PASSWORD`: Password for OCP login
@@ -28,18 +28,6 @@ Ensure the following environment variables are set before running the scripts:
 - Watson Machine Learning
 - Db2 Warehouse
 - Db2 Data Management Console
-
-## Environment Variables
-Ensure the following environment variables are set before running the script: (Refer to Line 32 to 67 of https://github.com/ngpinjie/cpd-installation-scripts)
-- `OCP_USERNAME`
-- `OCP_PASSWORD`
-- `OCP_URL`
-- `VERSION`
-- `PROJECT_CPD_INST_OPERATORS`
-- `PROJECT_CPD_INST_OPERANDS`
-- `STG_CLASS_BLOCK`
-- `STG_CLASS_FILE`
-- `DATASTAGE_TYPE`
 
 ## Usage
 1. Clone the Repository
