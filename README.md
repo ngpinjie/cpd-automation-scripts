@@ -84,4 +84,4 @@ Each component should be on a new line.
 ```
 
 ## Contributing
-Feel free to open issues or submit pull requests with improvements and enhancements.
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
