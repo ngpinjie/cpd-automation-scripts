@@ -8,26 +8,7 @@ get_cr_status() {
     --components=${component}
 }
 
-# Verify the status of Analytics Engine powered by Apache Spark
-get_cr_status "analyticsengine"
-
-# Verify the status of watsonx.data
-get_cr_status "watsonx_data"
-
-# Verify the status of Watson Studio
-get_cr_status "ws"
-
-# Verify the status of DataStage
-get_cr_status "${DATASTAGE_TYPE}"
-
-# Verify the status of WatsonPipeline
-get_cr_status "ws_pipelines"
-
-# Verify the status of Watson Machine Learning
-get_cr_status "wml"
-
-# Verify the status of Db2 Data Management Console
-get_cr_status "dmc"
-
-# Verify the status of Db2 Warehouse
-get_cr_status "db2wh"
+# Read components from resources.txt and verify the status of each one
+while IFS= read -r component; do
+  get_cr_status "${component}"
+done < resources.txt
