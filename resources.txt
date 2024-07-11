@@ -1,0 +1,8 @@
+analyticsengine
+watsonx_data
+ws
+${DATASTAGE_TYPE}
+ws_pipelines
+wml
+dmc
+db2wh
