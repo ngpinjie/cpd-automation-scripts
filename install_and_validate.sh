@@ -1,133 +1,146 @@
 #!/bin/bash
 
+# Set environment variables
+export DATASTAGE_TYPE=datastage_ent
+
 # Function to login to OCP
 login_ocp() {
+  echo "Logging in to OCP..."
   cpd-cli manage login-to-ocp \
-    --username=${OCP_USERNAME} \
-    --password=${OCP_PASSWORD} \
-    --server=${OCP_URL}
+    --username="${OCP_USERNAME}" \
+    --password="${OCP_PASSWORD}" \
+    --server="${OCP_URL}"
+  
+  if [ $? -ne 0 ]; then
+    echo "Error logging in to OCP"
+    exit 1
+  fi
 }
 
 # Function to apply OLM
 apply_olm() {
   local component=$1
+  echo "Applying OLM for component: ${component}"
   cpd-cli manage apply-olm \
-    --release=${VERSION} \
-    --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} \
-    --components=${component}
+    --release="${VERSION}" \
+    --cpd_operator_ns="${PROJECT_CPD_INST_OPERATORS}" \
+    --components="${component}"
+  
+  if [ $? -ne 0 ]; then
+    echo "Error applying OLM for component: ${component}"
+    exit 1
+  fi
 }
 
 # Function to apply CR
 apply_cr() {
   local component=$1
+  echo "Applying CR for component: ${component}"
   cpd-cli manage apply-cr \
-    --components=${component} \
-    --release=${VERSION} \
-    --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-    --block_storage_class=${STG_CLASS_BLOCK} \
-    --file_storage_class=${STG_CLASS_FILE} \
+    --components="${component}" \
+    --release="${VERSION}" \
+    --cpd_instance_ns="${PROJECT_CPD_INST_OPERANDS}" \
+    --block_storage_class="${STG_CLASS_BLOCK}" \
+    --file_storage_class="${STG_CLASS_FILE}" \
     --license_acceptance=true
+  
+  if [ $? -ne 0 ]; then
+    echo "Error applying CR for component: ${component}"
+    exit 1
+  fi
 }
 
-# Function to apply cluster components
-apply_cluster_components() {
-  cpd-cli manage apply-cluster-components \
-    --release=${VERSION} \
-    --license_acceptance=true \
-    --cert_manager_ns=${PROJECT_CERT_MANAGER} \
-    --licensing_ns=${PROJECT_LICENSE_SERVICE}
-}
-
-# Function to authorize instance topology
-authorize_instance_topology() {
-  cpd-cli manage authorize-instance-topology \
-    --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} \
-    --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS}
-}
-
-# Function to setup instance topology
-setup_instance_topology() {
-  cpd-cli manage setup-instance-topology \
-    --release=${VERSION} \
-    --cpd_operator_ns=${PROJECT_CPD_INST_OPERATORS} \
-    --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-    --license_acceptance=true \
-    --block_storage_class=${STG_CLASS_BLOCK}
-}
-
-# Function to apply entitlement
-apply_entitlement() {
-  local project_name=$1
-  local entitlement=$2
-  local production=$3
-  local preview=$4
-  cpd-cli manage apply-entitlement \
-    --cpd_instance_ns=${project_name} \
-    --entitlement=${entitlement} \
-    --production=${production} \
-    --preview=${preview}
-}
-
-# Function to get CR status
-get_cr_status() {
+# Function to validate installation
+validate_installation() {
   local component=$1
+  echo "Validating installation for component: ${component}"
   cpd-cli manage get-cr-status \
-    --cpd_instance_ns=${PROJECT_CPD_INST_OPERANDS} \
-    --components=${component}
+    --cpd_instance_ns="${PROJECT_CPD_INST_OPERANDS}" \
+    --components="${component}"
+  
+  if [ $? -ne 0 ]; then
+    echo "Error validating installation for component: ${component}"
+    exit 1
+  fi
 }
 
-# Export necessary environment variables
-export DATASTAGE_TYPE=datastage_ent
+# Ensure all required environment variables are set
+REQUIRED_VARS=(OCP_USERNAME OCP_PASSWORD OCP_URL VERSION PROJECT_CPD_INST_OPERATORS PROJECT_CPD_INST_OPERANDS STG_CLASS_BLOCK STG_CLASS_FILE PROJECT_CERT_MANAGER PROJECT_LICENSE_SERVICE)
+for var in "${REQUIRED_VARS[@]}"; do
+  if [ -z "${!var}" ]; then
+    echo "Error: Environment variable ${var} is not set"
+    exit 1
+  fi
+done
 
-# Login to OCP
+# Installing Analytics Engine Powered by Apache Spark
 login_ocp
-
-# Install Analytics Engine Powered by Apache Spark
 apply_olm "analyticsengine"
 apply_cr "analyticsengine"
+validate_installation "analyticsengine"
 
-# Install watsonx.data
-apply_cluster_components
-authorize_instance_topology
-setup_instance_topology
-export COMPONENTS="cpd_platform,watsonx_data"
+# Installing watsonx.data
+login_ocp
+cpd-cli manage apply-cluster-components \
+  --release="${VERSION}" \
+  --license_acceptance=true \
+  --cert_manager_ns="${PROJECT_CERT_MANAGER}" \
+  --licensing_ns="${PROJECT_LICENSE_SERVICE}"
+  
+cpd-cli manage authorize-instance-topology \
+  --cpd_operator_ns="${PROJECT_CPD_INST_OPERATORS}" \
+  --cpd_instance_ns="${PROJECT_CPD_INST_OPERANDS}"
+  
+cpd-cli manage setup-instance-topology \
+  --release="${VERSION}" \
+  --cpd_operator_ns="${PROJECT_CPD_INST_OPERATORS}" \
+  --cpd_instance_ns="${PROJECT_CPD_INST_OPERANDS}" \
+  --license_acceptance=true \
+  --block_storage_class="${STG_CLASS_BLOCK}"
+
+export COMPONENTS=cpd_platform,watsonx_data
 apply_olm "${COMPONENTS}"
 apply_cr "${COMPONENTS}"
-apply_entitlement "${PROJECT_CPD_INST_OPERANDS}" "watsonx-data" "true" "false"
+cpd-cli manage apply-entitlement \
+  --cpd_instance_ns="${PROJECT_CPD_INST_OPERANDS}" \
+  --entitlement=watsonx-data \
+  --production=true
 
-# Install Watson Studio
+validate_installation "cpd_platform"
+validate_installation "watsonx_data"
+
+# Installing Watson Studio
+login_ocp
 apply_olm "ws"
 apply_cr "ws"
+validate_installation "ws"
 
-# Install DataStage
+# Installing DataStage
+login_ocp
 apply_olm "${DATASTAGE_TYPE}"
 apply_cr "${DATASTAGE_TYPE}"
+validate_installation "${DATASTAGE_TYPE}"
 
-# Install IBM Watson Pipelines
+# Installing IBM Watson Pipelines
+login_ocp
 apply_olm "ws_pipelines"
 apply_cr "ws_pipelines"
+validate_installation "ws_pipelines"
 
-# Install Watson Machine Learning
+# Installing Watson Machine Learning
+login_ocp
 apply_olm "wml"
 apply_cr "wml"
+validate_installation "wml"
 
-# Install Db2 Warehouse
+# Installing Db2 Warehouse
+login_ocp
 apply_olm "db2wh"
 apply_cr "db2wh"
+validate_installation "db2wh"
 
-# Install Db2 Data Management Console
+# Installing Db2 Data Management Console
+login_ocp
 apply_olm "dmc"
 apply_cr "dmc"
-
-# Validation of installations
-get_cr_status "analyticsengine"
-get_cr_status "cpd_platform"
-get_cr_status "watsonx_data"
-get_cr_status "ws"
-get_cr_status "${DATASTAGE_TYPE}"
-get_cr_status "ws_pipelines"
-get_cr_status "wml"
-get_cr_status "db2wh"
-get_cr_status "dmc"
-
-echo "Installation and validation complete."
+validate_installation "dmc"
